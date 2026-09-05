@@ -1,0 +1,19 @@
+[Unit]
+Description=RAPP workbench readiness observation (no inference)
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.local/share/omarchy-rapp1-workbench
+Environment=PYTHONNOUSERSITE=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=GIT_OPTIONAL_LOCKS=0
+ExecStart=%h/.local/share/omarchy-rapp1-workbench/venv/bin/python workbench.py tick
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateNetwork=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/omarchy-rapp1-workbench
+ReadWritePaths=%h/.local/share/omarchy-rapp1-workbench/workspace
+TimeoutStartSec=120

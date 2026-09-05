@@ -1,0 +1,11 @@
+[Unit]
+Description=Observe RAPP workbench readiness every 30 minutes without model calls
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=30min
+AccuracySec=30s
+Unit=omarchy-rapp1-readiness.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,24 @@
+[Unit]
+Description=RAPP workbench pre-acceptance boundary (inference disabled)
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/omarchy-rapp1-workbench/dependencies/RAPP
+Environment=RAPP1_FACADE_DB=%h/.local/state/omarchy-rapp1-workbench/facade.sqlite3
+Environment=RAPP1_FACADE_HOST=127.0.0.1
+Environment=RAPP1_FACADE_PORT=7073
+Environment=PYTHONNOUSERSITE=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=GIT_OPTIONAL_LOCKS=0
+ExecStart=%h/.local/share/omarchy-rapp1-workbench/venv/bin/python %h/.local/share/omarchy-rapp1-workbench/facade_boot.py
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/omarchy-rapp1-workbench
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

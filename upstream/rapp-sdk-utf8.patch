@@ -1,0 +1,45 @@
+diff --git a/src/rapp_sdk/projects.py b/src/rapp_sdk/projects.py
+index 91b2592..a701825 100644
+--- a/src/rapp_sdk/projects.py
++++ b/src/rapp_sdk/projects.py
+@@ -1196,8 +1196,12 @@ def pack_project_egg(
+     manifest_bytes = canonicalize(dict(manifest))
+     buffer = io.BytesIO()
+     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_STORED) as archive:
++        class Utf8ZipInfo(zipfile.ZipInfo):
++            def _encodeFilenameFlags(self):
++                return self.filename.encode("utf-8"), self.flag_bits | 0x800
++
+         def write(path: str, value: bytes) -> None:
+-            info = zipfile.ZipInfo(path, date_time=(1980, 1, 1, 0, 0, 0))
++            info = Utf8ZipInfo(path, date_time=(1980, 1, 1, 0, 0, 0))
+             info.compress_type = zipfile.ZIP_STORED
+             info.flag_bits |= 0x800
+             archive.writestr(info, value)
+diff --git a/tests/test_projects.py b/tests/test_projects.py
+index 96be821..998c83d 100644
+--- a/tests/test_projects.py
++++ b/tests/test_projects.py
+@@ -1,8 +1,10 @@
+ from __future__ import annotations
+ 
+ import hashlib
++import io
+ import json
+ import unittest
++import zipfile
+ 
+ from rapp_sdk import (
+     PROJECT_FRAME_KINDS,
+@@ -157,6 +159,11 @@ class ProjectProtocolTests(unittest.TestCase):
+         first = pack_project_egg(manifest, contents)
+         second = pack_project_egg(manifest, contents)
+         self.assertEqual(first, second)
++        with zipfile.ZipFile(io.BytesIO(first)) as archive:
++            for info in archive.infolist():
++                self.assertEqual(info.flag_bits, 0x800)
++                start = info.header_offset
++                self.assertEqual(int.from_bytes(first[start + 6:start + 8], "little"), 0x800)
+         unpacked_manifest, unpacked_contents = read_project_egg(first)
+         self.assertEqual(unpacked_manifest, manifest)
+         self.assertEqual(unpacked_contents, contents)

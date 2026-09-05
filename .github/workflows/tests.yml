@@ -1,0 +1,58 @@
+name: Workbench tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  workbench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-1
+          ref: eb50008011447f5e69372ac22a1755f0978d15ed
+          path: vendor/rapp-1
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-map
+          ref: 95e2f7290886e2de591fc78e4fb6e14b83435381
+          path: vendor/rapp-map
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-projects
+          ref: 2b375029d051b80b4df8c19749aeb64a96df216a
+          path: vendor/rapp-projects
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-sdk
+          ref: 402a7e0210b2c4e71d0a1b44744b842f3c2d6b49
+          path: vendor/rapp-sdk
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-workspace
+          ref: 4e194d90cdd34d7ba050b24781fddff971cdb7b5
+          path: vendor/rapp-workspace
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kody-w/rapp-herdr
+          ref: e75b9b32d68cd7d37ee595b528136cb6c0ec7902
+          path: vendor/rapp-herdr
+          persist-credentials: false
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q tests
