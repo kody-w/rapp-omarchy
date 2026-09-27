@@ -1,5 +1,9 @@
 # RAPP Omarchy
 
+<!-- rapp1:network-header:start -->
+[![RAPP/1](https://kody-w.github.io/rapp-hive-public/portfolio/badges/rapp-omarchy.svg)](https://github.com/kody-w/rapp-hive-public/blob/main/portfolio/repos/rapp-omarchy.md) · **New to RAPP?** [Start here: get your Brainstem →](https://github.com/kody-w/rapp-installer#start-here)
+<!-- rapp1:network-header:end -->
+
 A standalone, experimental workbench for persistent, privately reachable work on Omarchy. Herdr owns terminals and attention; Git worktrees isolate changes; RAPP Workspace owns the private world; native RAPP Projects owns project frames, checkpoints, leases and bounded review policy.
 
 This project lives in [`kody-w/rapp-omarchy`](https://github.com/kody-w/rapp-omarchy), independently of AIBAST. It does not modify the AIBAST application, its catalog or its default installer. The creature terrarium is a separate capability, not bundled into this repository.
